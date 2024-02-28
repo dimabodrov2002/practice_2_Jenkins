@@ -1,14 +1,13 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.6.3-jdk-8-slim'
-            args '-v /root/.m2:/root/.m2'
-        }
-    }
+    agent any
     stages {
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                script {
+                    docker.image('maven:3.6.3-jdk-8-slim').inside {
+                        sh 'mvn clean package'
+                    }
+                }
             }
         }
         stage('Publish Artifact') {
@@ -26,3 +25,4 @@ pipeline {
         }
     }
 }
+
