@@ -4,15 +4,21 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    docker.image('maven:3.6.3-jdk-8-slim').inside {
-                        sh 'mvn clean package'
+                    docker {
+                        image 'maven:3.6.3-jdk-8-slim'
+                        args '-v /root/.m2:/root/.m2'
+                        inside {
+                            sh 'mvn clean package'
+                        }
                     }
                 }
             }
         }
         stage('Publish Artifact') {
             steps {
-                archiveArtifacts(artifacts: '**/target/*.jar', fingerprint: true)
+                script {
+                    archiveArtifacts(artifacts: '**/target/*.jar', fingerprint: true)
+                }
             }
         }
     }
