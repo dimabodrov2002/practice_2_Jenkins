@@ -6,7 +6,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sudo docker.image('maven:3.6.3-jdk-8-slim').inside {
+                    docker.image('maven:3.6.3-jdk-8-slim').inside('-u root') {
                         sh 'mvn clean package'
                     }
                 }
