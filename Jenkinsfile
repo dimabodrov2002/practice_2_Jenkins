@@ -6,7 +6,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sudo docker.image('maven:3.6.3-jdk-8-slim').inside {
+                    sudo docker.image('maven:3.6.3-jdk-8-slim') {
                         sh 'mvn clean package'
                     }
                 }
@@ -15,7 +15,7 @@ pipeline {
         stage('Publish Artifact') {
             steps {
                 script {
-                    sudo archiveArtifacts(artifacts: '**/target/*.jar', fingerprint: true)
+                    archiveArtifacts(artifacts: '**/target/*.jar', fingerprint: true)
                 }
             }
         }
